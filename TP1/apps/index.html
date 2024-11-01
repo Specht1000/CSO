@@ -1,0 +1,202 @@
+<html>
+<head><title>Trabalho Prático 1 - Construção de Sistemas Operacionais</title></head>
+<meta http-equiv="refresh" content="5">
+<body>
+<h1>Trabalho Prático 1 de Construção de Sistemas Operacionais</h1>
+<h2>Bianca Zuchinali e Guilherme Specht</h2>
+<hr>
+<p><strong>Versão do Sistema e Kernel:</strong> Linux version 6.1.0-10-amd64 (debian-kernel@lists.debian.org) (gcc-12 (Debian 12.2.0-14) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40) #1 SMP PREEMPT_DYNAMIC Debian 6.1.38-1 (2023-07-14)
+</p>
+<p><strong>Uptime:</strong> 0 dias, 0 horas, 8 minutos e 57 segundos</p>
+<p><strong>Tempo Ocioso:</strong> 0 dias, 1 horas, 1 minutos e 55 segundos</p>
+<p><strong>Data e Hora:</strong> 30-08-2024 19:30:11</p>
+<p><strong>Modelo do Processador:</strong> 12th Gen Intel(R) Core(TM) i7-1255U</p>
+<p><strong>Velocidade do Processador:</strong> 2611.200 MHz</p>
+<p><strong>Número de Núcleos:</strong> 10</p>
+<p><strong>Carga do Sistema:</strong> 5.38 3.23 1.67 9/628 2310
+</p>
+<p><strong>Capacidade ocupada do processador:</strong> 13.11%</p>
+<p><strong>Memória:</strong> Total: 10825 MB, Usada: 1687 MB</p>
+<p><strong>Operações sobre o sistema de I/O:</strong> Leituras: 12840, Escritas: 12008</p>
+<p><strong>Sistemas de Arquivos Suportados pelo Kernel:</strong></p>
+<pre>nodev	sysfs
+nodev	tmpfs
+nodev	bdev
+nodev	proc
+nodev	cgroup
+nodev	cgroup2
+nodev	cpuset
+nodev	devtmpfs
+nodev	debugfs
+nodev	tracefs
+nodev	securityfs
+nodev	sockfs
+nodev	bpf
+nodev	pipefs
+nodev	ramfs
+nodev	hugetlbfs
+nodev	devpts
+nodev	mqueue
+nodev	pstore
+	ext3
+	ext2
+	ext4
+nodev	autofs
+	fuseblk
+nodev	fuse
+nodev	configfs
+nodev	fusectl
+nodev	binfmt_misc
+nodev	rpc_pipefs
+</pre>
+<p><strong>Dispositivos de Caractere e Bloco e Grupos:</strong></p>
+<pre>Character devices:
+  1 mem
+  4 /dev/vc/0
+  4 tty
+  4 ttyS
+  5 /dev/tty
+  5 /dev/console
+  5 /dev/ptmx
+  6 lp
+  7 vcs
+ 10 misc
+ 13 input
+ 21 sg
+ 29 fb
+ 99 ppdev
+116 alsa
+128 ptm
+136 pts
+153 spi
+180 usb
+189 usb_device
+226 drm
+248 hidraw
+249 cxl
+250 bsg
+251 rtc
+252 dax
+253 tpm
+254 gpiochip
+
+Block devices:
+  7 loop
+  8 sd
+ 11 sr
+ 65 sd
+ 66 sd
+ 67 sd
+ 68 sd
+ 69 sd
+ 70 sd
+ 71 sd
+128 sd
+129 sd
+130 sd
+131 sd
+132 sd
+133 sd
+134 sd
+135 sd
+254 device-mapper
+259 blkext
+</pre>
+<p><strong>Dispositivos de Rede:</strong></p>
+<pre>    lo:    2797      27    0    0    0     0          0         0     2797      27    0    0    0     0       0          0
+enp0s3: 6311890    6040    0    0    0     0          0         0   973455    3288    0    0    0     0       0          0
+</pre>
+<p><strong>Lista de Processos:</strong></p>
+<pre>      1 systemd
+      2 kthreadd
+      3 rcu_gp
+      4 rcu_par_gp
+      5 slub_flushwq
+      6 netns
+      8 kworker/0:0H-events_highpri
+     10 mm_percpu_wq
+     11 rcu_tasks_kthread
+     12 rcu_tasks_rude_kthread
+     13 rcu_tasks_trace_kthread
+     14 ksoftirqd/0
+     15 rcu_preempt
+     16 migration/0
+     17 kworker/0:1-inet_frag_wq
+     18 cpuhp/0
+     19 cpuhp/1
+     20 migration/1
+     21 ksoftirqd/1
+     23 kworker/1:0H-events_highpri
+     24 cpuhp/2
+     25 migration/2
+     26 ksoftirqd/2
+     28 kworker/2:0H-events_highpri
+     29 cpuhp/3
+     30 migration/3
+     31 ksoftirqd/3
+     33 kworker/3:0H-events_highpri
+     34 cpuhp/4
+     35 migration/4
+     36 ksoftirqd/4
+     37 kworker/4:0-ata_sff
+     38 kworker/4:0H-events_highpri
+     39 cpuhp/5
+     40 migration/5
+     41 ksoftirqd/5
+     43 kworker/5:0H-events_highpri
+     44 cpuhp/6
+     45 migration/6
+     46 ksoftirqd/6
+     47 kworker/6:0-cgroup_destroy
+     49 cpuhp/7
+     50 migration/7
+     51 ksoftirqd/7
+     53 kworker/7:0H-kblockd
+     54 cpuhp/8
+     55 migration/8
+     56 ksoftirqd/8
+     57 kworker/8:0-events
+     58 kworker/8:0H-events_highpri
+     59 cpuhp/9
+     60 migration/9
+     61 ksoftirqd/9
+     63 kworker/9:0H-events_highpri
+     66 kworker/u20:2-writeback
+     67 kworker/u20:3-flush-8:0
+     72 kworker/u20:8-writeback
+     73 kdevtmpfs
+     74 inet_frag_wq
+     75 kauditd
+     76 khungtaskd
+     77 oom_reaper
+     78 writeback
+     79 kcompactd0
+     80 ksmd
+     82 khugepaged
+     83 kintegrityd
+     84 kblockd
+     85 blkcg_punt_bio
+     86 tpm_dev_wq
+     87 edac-poller
+     88 devfreq_wq
+     89 kworker/9:1-mm_percpu_wq
+     90 kworker/9:1H-kblockd
+     91 kswapd0
+     98 kthrotld
+    100 acpi_thermal_pm
+    101 xenbus_probe
+    102 kworker/5:1-mm_percpu_wq
+    103 mld
+    104 ipv6_addrconf
+    109 kstrp
+    114 zswap-shrink
+    115 kworker/u21:0
+    134 kworker/7:1-events
+    135 kworker/1:1-mm_percpu_wq
+    153 kworker/3:1-events
+    165 kworker/4:1H-kblockd
+    173 kworker/3:1H-kblockd
+    185 kworker/8:1H-kblockd
+  </pre>
+</body>
+</html>
