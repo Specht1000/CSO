@@ -1,2 +1,2 @@
 # CSO
-Trabalhos da cadeira de Construcao de Sistemas Operacionais.
+Trabalhos da cadeira de Construção de Sistemas Operacionais.
