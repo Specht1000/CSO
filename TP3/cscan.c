@@ -1,7 +1,3 @@
-// Trabalho Prático 3 da disciplina de Construção de Sistemas Operacionais
-// Guilherme Martins Specht
-// Última atualização: 23/11/2024
-
 #include <linux/blkdev.h>
 #include <linux/elevator.h>
 #include <linux/module.h>
@@ -66,6 +62,36 @@ static void print_all_processed(struct cscan_data *cd) {
     }
 }
 
+/* Função para ordenar a fila em ordem crescente de setores */
+static void sort_queue(struct cscan_data *cd) {
+    struct list_head sorted_queue;
+    struct request *rq, *tmp;
+
+    INIT_LIST_HEAD(&sorted_queue); // Inicializa uma lista temporária para ordenar as requisições
+
+    while (!list_empty(&cd->queue)) {
+        struct request *min_rq = NULL;
+        unsigned long min_sector = ULONG_MAX;
+
+        list_for_each_entry_safe(rq, tmp, &cd->queue, queuelist) {
+            unsigned long sector = blk_rq_pos(rq);
+            if (sector < min_sector) {
+                min_sector = sector;
+                min_rq = rq;
+            }
+        }
+
+        if (min_rq) {
+            list_del_init(&min_rq->queuelist); // Remove a requisição com o menor setor da fila original
+            list_add_tail(&min_rq->queuelist, &sorted_queue); // Adiciona na fila ordenada
+        }
+    }
+
+    // Substitui a fila original pela fila ordenada
+    list_splice_tail_init(&sorted_queue, &cd->queue);
+}
+
+
 /* Função para despachar todas as requisições acumuladas na fila */
 static int cscan_dispatch(struct request_queue *q, int force) {
     struct cscan_data *cd = q->elevator->elevator_data;  // Obtém os dados do escalonador
@@ -79,16 +105,23 @@ static int cscan_dispatch(struct request_queue *q, int force) {
         return 0;
     }
 
-	if (cscan_debug) {
-		printk(KERN_INFO "C-SCAN [dispatch]: Iniciando processamento da lista\n");
-	}
-	
+    if (cscan_debug) {
+        printk(KERN_INFO "C-SCAN [dispatch]: Ordenando a fila por número de setor\n");
+    }
+
+    // Ordena a fila em ordem crescente de setores
+    sort_queue(cd);
+
+    if (cscan_debug) {
+        printk(KERN_INFO "C-SCAN [dispatch]: Iniciando processamento da lista ordenada\n");
+    }
+
     // Aloca memória para um novo bloco de setores processados
     processed_block = kmalloc(sizeof(*processed_block), GFP_KERNEL);
     if (!processed_block) { 
-		if (cscan_debug){
-			printk(KERN_ERR "C-SCAN [dispatch]: Falha ao alocar memória para bloco processado\n");
-		}
+        if (cscan_debug) {
+            printk(KERN_ERR "C-SCAN [dispatch]: Falha ao alocar memória para bloco processado\n");
+        }
         return -ENOMEM;
     }
     INIT_LIST_HEAD(&processed_block->sectors);  // Inicializa a lista de setores no bloco
@@ -99,8 +132,8 @@ static int cscan_dispatch(struct request_queue *q, int force) {
         ps->sector = 0;  // Define o setor inicial
         list_add_tail(&ps->list, &processed_block->sectors);
         if (cscan_debug) {
-			printk(KERN_INFO "C-SCAN [dispatch]: Setor inicial [0] adicionado ao bloco\n");
-		}
+            printk(KERN_INFO "C-SCAN [dispatch]: Setor inicial [0] adicionado ao bloco\n");
+        }
     }
 
     // Percorre os setores em ordem crescente
@@ -139,8 +172,8 @@ static int cscan_dispatch(struct request_queue *q, int force) {
         ps->sector = max_sector;  // Define o setor final
         list_add_tail(&ps->list, &processed_block->sectors);
         if (cscan_debug) {
-			printk(KERN_INFO "C-SCAN [dispatch]: Setor final [%lu] adicionado ao bloco\n", max_sector);
-		}
+            printk(KERN_INFO "C-SCAN [dispatch]: Setor final [%lu] adicionado ao bloco\n", max_sector);
+        }
     }
 
     // Adiciona o bloco processado à lista geral
@@ -152,14 +185,15 @@ static int cscan_dispatch(struct request_queue *q, int force) {
         printk(KERN_CONT " %lu", ps->sector);
     }
     printk(KERN_INFO "\n");
-	
-	if (cscan_debug) {
-		printk(KERN_INFO "C-SCAN [dispatch]: Movendo para o fim do disco\n");
-		printk(KERN_INFO "C-SCAN [dispatch]: Retornando ao início do disco para o próximo bloco\n");
-	}
+
+    if (cscan_debug) {
+        printk(KERN_INFO "C-SCAN [dispatch]: Movendo para o fim do disco\n");
+        printk(KERN_INFO "C-SCAN [dispatch]: Retornando ao início do disco para o próximo bloco\n");
+    }
 
     return 1;  // Retorna sucesso
 }
+
 
 /* Adiciona uma requisição à fila */
 static void cscan_add_request(struct request_queue *q, struct request *rq) {
